@@ -68,6 +68,7 @@
     .logo h1 {
       color: var(--light-color);
       font-size: 1.8rem;
+      margin: 0;
     }
     .nav-links {
       display: flex;
@@ -88,6 +89,8 @@
       display: none;
       font-size: 2rem;
       color: var(--light-color);
+      transition: transform 0.5s ease;
+      transform-origin: left center;
     }
     @media (max-width: 768px) {
       .menu-toggle {
@@ -100,10 +103,12 @@
         right: 0;
         background: var(--primary-color);
         flex-direction: column;
-        display: none;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.5s ease;
       }
       .nav-links.active {
-        display: flex;
+        max-height: 300px;
       }
       .nav-links li {
         margin: 1rem 0;
@@ -146,7 +151,68 @@
     }
     .hero .overlay h2 {
       font-size: 2.5rem;
-      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    }
+
+    /* Gallery Section */
+    #gallery {
+      padding: 4rem 0;
+      background: var(--light-color);
+    }
+    #gallery .gallery-container {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    /* Main gallery image: show full image in its aspect ratio,
+       but restrict overall height */
+    #gallery #gallery-main {
+      width: 100%;
+      max-height: 500px; /* Adjust as needed */
+      object-fit: contain;
+      border-radius: 8px;
+      transition: opacity 0.5s ease;
+    }
+    #gallery .gallery-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    #gallery .gallery-nav button {
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--light-color);
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 2rem;
+      pointer-events: all;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #gallery .gallery-nav button:hover {
+      background: var(--accent-color);
+    }
+    #gallery .gallery-list {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    #gallery .gallery-list img {
+      width: 100px;
+      height: 60px;
+      object-fit: cover;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border 0.3s ease;
+    }
+    #gallery .gallery-list img.active {
+      border: 2px solid var(--accent-color);
     }
 
     /* Content Sections */
@@ -222,7 +288,7 @@
       padding: 1.5rem 0;
     }
 
-    /* Custom Cursor (Default small circle) - Only for devices with hover capability */
+    /* Custom Cursor (Desktop Only) */
     .custom-cursor {
       position: fixed;
       top: 0;
@@ -258,6 +324,7 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#team">Team</a></li>
+          <li><a href="#gallery">Gallery</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
@@ -326,12 +393,36 @@
     </div>
   </section>
 
+  <!-- Gallery Section -->
+  <section id="gallery">
+    <div class="container section-content">
+      <h2>Gallery</h2>
+      <div class="gallery-container">
+        <!-- Main gallery image with max-height restriction and object-fit: contain -->
+        <img id="gallery-main" src="donaldlover.jpg" alt="Gallery Image">
+        <!-- Navigation arrows -->
+        <div class="gallery-nav">
+          <button id="gallery-prev">&#8592;</button>
+          <button id="gallery-next">&#8594;</button>
+        </div>
+        <!-- Thumbnails list with four images -->
+        <div class="gallery-list" id="gallery-list">
+          <img src="donaldlover.jpg" alt="Gallery 1" class="active" data-index="0">
+          <img src="we fucked.jpg" alt="Gallery 2" data-index="1">
+          <img src="nukeem.jpg" alt="Gallery 3" data-index="2">
+          <img src="dead.jpg" alt="Gallery 4" data-index="3">
+          <img src="caughtcrime.jpg" alt="Gallery 5" data-index="4">
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Contact Section -->
   <section id="contact">
     <div class="container section-content">
       <h2>Contact Us</h2>
-      <p>For more information, reach out at <a href="mailto:info@example.com">info@planetmakers.eu</a> or call +420 777 644 064</p>
-      <a href="mailto:info@example.com" class="contact-btn">Email Us</a>
+      <p>For more information, reach out at <a href="mailto:info@planetmakers.eu">info@planetmakers.eu</a> or call +420 777 644 064</p>
+      <a href="mailto:info@planetmakers.eu" class="contact-btn">Email Us</a>
     </div>
   </section>
 
@@ -354,7 +445,47 @@
       navLinks.classList.toggle('active');
     });
 
-    // Image Slider Logic
+    // Gallery Logic
+    const galleryImages = [
+      'donaldlover.jpg',
+      'we fucked.jpg',
+      'nukeem.jpg',
+      'dead.jpg',
+      'caughtcrime.jpg'
+    ];
+    let currentGalleryIndex = 0;
+    const galleryMain = document.getElementById('gallery-main');
+    const galleryPrev = document.getElementById('gallery-prev');
+    const galleryNext = document.getElementById('gallery-next');
+    const galleryList = document.getElementById('gallery-list');
+    const thumbnailImages = galleryList.querySelectorAll('img');
+
+    function updateGallery() {
+      galleryMain.src = galleryImages[currentGalleryIndex];
+      // Update active thumbnail border
+      thumbnailImages.forEach(img => {
+        img.classList.toggle('active', parseInt(img.dataset.index) === currentGalleryIndex);
+      });
+    }
+
+    galleryPrev.addEventListener('click', () => {
+      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+      updateGallery();
+    });
+
+    galleryNext.addEventListener('click', () => {
+      currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+      updateGallery();
+    });
+
+    thumbnailImages.forEach(img => {
+      img.addEventListener('click', () => {
+        currentGalleryIndex = parseInt(img.dataset.index);
+        updateGallery();
+      });
+    });
+
+    // Image Slider Logic (for Hero Section)
     const sliderImages = document.querySelectorAll('.hero img');
     let currentSlide = 0;
     const slideInterval = 5000;
@@ -391,7 +522,6 @@
     function animateCursor() {
       currentX += (targetX - currentX) * 0.25;
       currentY += (targetY - currentY) * 0.25;
-      // Center the custom cursor by subtracting half its dimensions
       const offsetX = customCursor.offsetWidth / 2;
       const offsetY = customCursor.offsetHeight / 2;
       customCursor.style.transform = `translate(${currentX - offsetX}px, ${currentY - offsetY}px)`;
@@ -409,7 +539,7 @@
       targetY = rect.top + rect.height / 2;
     }
     
-    // Attach hover events to interactive elements (including contact button)
+    // Attach hover events to interactive elements (Desktop Only)
     const interactiveElements = document.querySelectorAll('a, button, .team-member, .menu-toggle, .contact-btn');
     interactiveElements.forEach((el) => {
       el.addEventListener('mouseenter', () => {
