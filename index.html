@@ -1,1 +1,404 @@
-<p>Under Construction by the Boccia Psáry Team</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boccia Team - Fluid Custom Cursor with Aligned Outline</title>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" 
+    rel="stylesheet" 
+  />
+  <style>
+    /* CSS Variables for theming */
+    :root {
+      --primary-color: #004466;
+      --secondary-color: #0088cc;
+      --accent-color: #ffdd57;
+      --light-color: #ffffff;
+      --body-bg: #f4f7f9;
+      --text-color: #333;
+      --cursor-default-size: 20px;
+    }
+
+    /* Global Styles & Hide Native Cursor */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      cursor: none;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--body-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Fluid Container */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation */
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      padding: 1rem 0;
+      position: relative;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo h1 {
+      color: var(--light-color);
+      font-size: 1.8rem;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+    .nav-links li {
+      margin-left: 2rem;
+    }
+    .nav-links a {
+      color: var(--light-color);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover {
+      color: var(--accent-color);
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 2rem;
+      color: var(--light-color);
+    }
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--primary-color);
+        flex-direction: column;
+        display: none;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .nav-links li {
+        margin: 1rem 0;
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      height: 70vh;
+      min-height: 300px;
+    }
+    .hero img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70vh;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .hero img.active {
+      opacity: 1;
+    }
+    .hero .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70vh;
+      background: rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 1rem;
+      color: var(--light-color);
+    }
+    .hero .overlay h2 {
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Content Sections */
+    section {
+      padding: 4rem 0;
+    }
+    .section-content {
+      background: var(--light-color);
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .section-content h2 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    .section-content p {
+      margin-bottom: 1rem;
+    }
+
+    /* Team Section */
+    .team-members {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .team-member {
+      background: var(--body-bg);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      flex: 1 1 200px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .team-member:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .team-member img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 1rem;
+      object-fit: cover;
+    }
+    .team-member h3 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Contact Section Button */
+    .contact-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: var(--secondary-color);
+      color: var(--light-color);
+      border-radius: 4px;
+      font-size: 1.2rem;
+      transition: transform 0.3s ease, background 0.3s ease;
+      margin-top: 1rem;
+    }
+    .contact-btn:hover {
+      transform: scale(1.1);
+      background: var(--accent-color);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-color);
+      color: var(--light-color);
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+
+    /* Custom Cursor (Default small circle) */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--cursor-default-size);
+      height: var(--cursor-default-size);
+      border: 2px solid var(--accent-color);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      /* Use box-sizing: border-box so width/height include the border */
+      box-sizing: border-box;
+      transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <h1>Boccia Team</h1>
+        </div>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section with Image Slider -->
+  <section class="hero" id="home">
+    <img src="https://via.placeholder.com/1920x1080/004466/ffffff?text=Boccia+Team+1" alt="Boccia Team 1" class="active">
+    <img src="https://via.placeholder.com/1920x1080/006699/ffffff?text=Boccia+Team+2" alt="Boccia Team 2">
+    <img src="https://via.placeholder.com/1920x1080/0088cc/ffffff?text=Boccia+Team+3" alt="Boccia Team 3">
+    <div class="overlay">
+      <h2>Welcome to Our Boccia Team</h2>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="container section-content">
+      <h2>About Our Team</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus interdum erat ligula, in aliquet erat finibus ac. Integer nec dictum dolor, vel faucibus metus.</p>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section id="team">
+    <div class="container section-content">
+      <h2>Meet the Players</h2>
+      <div class="team-members">
+        <div class="team-member">
+          <img src="https://via.placeholder.com/120" alt="Player 1">
+          <h3>Player 1</h3>
+          <p>Role/Position</p>
+        </div>
+        <div class="team-member">
+          <img src="https://via.placeholder.com/120" alt="Player 2">
+          <h3>Player 2</h3>
+          <p>Role/Position</p>
+        </div>
+        <div class="team-member">
+          <img src="https://via.placeholder.com/120" alt="Player 3">
+          <h3>Player 3</h3>
+          <p>Role/Position</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="container section-content">
+      <h2>Contact Us</h2>
+      <p>For more information, reach out at <a href="mailto:info@example.com">info@example.com</a> or call (123) 456-7890.</p>
+      <!-- Contact Button -->
+      <a href="mailto:info@example.com" class="contact-btn">Email Us</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Boccia Team. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Custom Cursor Element -->
+  <div class="custom-cursor" id="custom-cursor"></div>
+
+  <!-- JavaScript -->
+  <script>
+    // Toggle Mobile Navigation
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Image Slider Logic
+    const sliderImages = document.querySelectorAll('.hero img');
+    let currentSlide = 0;
+    const slideInterval = 5000;
+    function showSlide(index) {
+      sliderImages.forEach((img, i) => {
+        img.classList.toggle('active', i === index);
+      });
+    }
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % sliderImages.length;
+      showSlide(currentSlide);
+    }
+    setInterval(nextSlide, slideInterval);
+
+    // Smooth Custom Cursor Logic
+    const customCursor = document.getElementById('custom-cursor');
+    let isHoveringInteractive = false;
+    
+    // Position variables
+    let targetX = window.innerWidth / 2,
+        targetY = window.innerHeight / 2;
+    let currentX = targetX,
+        currentY = targetY;
+    
+    // Update target on mousemove when not hovering an interactive element
+    document.addEventListener('mousemove', (e) => {
+      if (!isHoveringInteractive) {
+        targetX = e.clientX;
+        targetY = e.clientY;
+      }
+    });
+    
+    // Animation loop to interpolate smoothly toward the target position
+    function animateCursor() {
+      currentX += (targetX - currentX) * 0.25;
+      currentY += (targetY - currentY) * 0.25;
+      // Center the custom cursor by subtracting half its dimensions
+      const offsetX = customCursor.offsetWidth / 2;
+      const offsetY = customCursor.offsetHeight / 2;
+      customCursor.style.transform = `translate(${currentX - offsetX}px, ${currentY - offsetY}px)`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    
+    // Morph the cursor to match an element’s dimensions, shape, and center position
+    function morphCursorToElement(el) {
+      const rect = el.getBoundingClientRect();
+      customCursor.style.width = `${rect.width}px`;
+      customCursor.style.height = `${rect.height}px`;
+      customCursor.style.borderRadius = window.getComputedStyle(el).borderRadius;
+      targetX = rect.left + rect.width / 2;
+      targetY = rect.top + rect.height / 2;
+    }
+    
+    // Attach hover events to interactive elements (including contact button)
+    const interactiveElements = document.querySelectorAll('a, button, .team-member, .menu-toggle, .contact-btn');
+    interactiveElements.forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        isHoveringInteractive = true;
+        morphCursorToElement(el);
+      });
+      el.addEventListener('mouseleave', () => {
+        isHoveringInteractive = false;
+        customCursor.style.width = getComputedStyle(document.documentElement).getPropertyValue('--cursor-default-size');
+        customCursor.style.height = getComputedStyle(document.documentElement).getPropertyValue('--cursor-default-size');
+        customCursor.style.borderRadius = '50%';
+      });
+    });
+  </script>
+</body>
+</html>
