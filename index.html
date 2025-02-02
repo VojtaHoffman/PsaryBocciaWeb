@@ -222,7 +222,7 @@
       padding: 1.5rem 0;
     }
 
-    /* Custom Cursor (Default small circle) */
+    /* Custom Cursor (Default small circle) - Only for devices with hover capability */
     .custom-cursor {
       position: fixed;
       top: 0;
@@ -233,10 +233,15 @@
       border-radius: 50%;
       pointer-events: none;
       transform: translate(-50%, -50%);
-      /* Use box-sizing: border-box so width/height include the border */
       box-sizing: border-box;
       transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
       z-index: 10000;
+    }
+    /* Disable custom cursor on touch devices */
+    @media (hover: none) and (pointer: coarse) {
+      .custom-cursor {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -298,22 +303,22 @@
           <p>Pěstitel Sprchových Mikrokultur</p>
         </div>
         <div class="team-member">
-          <img src="goblin.jpeg" alt="Player 3">
+          <img src="goblin.jpeg" alt="Player 4">
           <h3>BuM Goblin</h3>
           <p>Big Fat Zero oi mate!</p>
         </div>
         <div class="team-member">
-          <img src="zubrevolved.jpeg" alt="Player 3">
+          <img src="zubrevolved.jpeg" alt="Player 5">
           <h3>Evolved Goblin aneb HakaHaka Goblin</h3>
           <p>Rodinný přílušník BuM Goblina</p>
         </div>
         <div class="team-member">
-          <img src="megamind.jpeg" alt="Player 3">
+          <img src="megamind.jpeg" alt="Player 6">
           <h3>Brainiac</h3>
           <p>Lexikologické Prase</p>
         </div>
         <div class="team-member">
-          <img src="uhhhh.png" alt="Player 3">
+          <img src="uhhhh.png" alt="Player 7">
           <h3>Rocket League Pedofil</h3>
           <p>Je libo operaci kolene?</p>
         </div>
@@ -326,7 +331,6 @@
     <div class="container section-content">
       <h2>Contact Us</h2>
       <p>For more information, reach out at <a href="mailto:info@example.com">info@planetmakers.eu</a> or call +420 777 644 064</p>
-      <!-- Contact Button -->
       <a href="mailto:info@example.com" class="contact-btn">Email Us</a>
     </div>
   </section>
@@ -365,7 +369,7 @@
     }
     setInterval(nextSlide, slideInterval);
 
-    // Smooth Custom Cursor Logic
+    // Custom Cursor Logic (Desktop Only)
     const customCursor = document.getElementById('custom-cursor');
     let isHoveringInteractive = false;
     
@@ -383,7 +387,7 @@
       }
     });
     
-    // Animation loop to interpolate smoothly toward the target position
+    // Animation loop to smoothly interpolate the cursor's position
     function animateCursor() {
       currentX += (targetX - currentX) * 0.25;
       currentY += (targetY - currentY) * 0.25;
